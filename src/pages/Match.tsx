@@ -35,7 +35,7 @@ function App() {
   ];
   return (
     <div className="p-4 min-h-screen">
-      <div className="gap-4 -mx-4 grid grid-flow-col h-full ">
+      <div className="gap-4 -mx-4 grid grid-flow-col h-full">
         <div className="">
           <VideoPlayer />
           <Timer />

@@ -16,12 +16,13 @@ const VideoPlayer = () => {
 
   return (
     <div>
-      <div className="mb-3 w-96">
+      <div className="mb-3">
         <ReactPlayer
           ref={ref}
           url="https://www.youtube.com/watch?v=Wfd4ANZQG9I"
           playing={playing}
-          width={"100%"}
+          width={450}
+          height={255}
           config={{
             playerVars: {
               showinfo: 0,
@@ -48,18 +49,6 @@ const VideoPlayer = () => {
             <path d="M18.3 36.4q-.75.5-1.525.05Q16 36 16 35.1V12.6q0-.9.775-1.35.775-.45 1.525.05L36 22.6q.7.45.7 1.25T36 25.1Z" />
           </svg>
         </button>
-        <div className="pl-3 flex-grow">
-          <input
-            type="range"
-            className="progress"
-            min={0}
-            max={0.999999}
-            step="any"
-            onMouseDown={handleSeekMouseDown}
-            onChange={handleSeekChange}
-            onMouseUp={handleSeekMouseUp}
-          />
-        </div>
       </div>
     </div>
   );

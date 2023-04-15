@@ -1,15 +1,11 @@
-import { useTimerContext } from "../../context/TimerContext/TimerContext";
-
-const Timeline = () => {
-  const { events, removeEvent } = useTimerContext();
+const Timeline = ({ events, removeEvent }) => {
   return (
     <div className="max-h-max overflow-y-auto">
-      {/* <ul className="steps steps-vertical"></ul> */}
       <div className="p-4">
         <ol className="relative border-l border-gray-200 dark:border-gray-700">
           {events.map(
             (
-              { event, id, time }: { event: string; id: string; time: number },
+              { name, id, time }: { name: string; id: string; time: number },
               i: number
             ) => (
               <li className="mb-10 ml-6" key={i}>
@@ -30,15 +26,15 @@ const Timeline = () => {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
                 </button>
                 <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-                  {event}
+                  {name}
                 </h3>
                 <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500 font-mono">
                   {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:

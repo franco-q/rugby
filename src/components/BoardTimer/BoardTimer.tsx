@@ -1,8 +1,29 @@
-import { useTimerContext } from "../../context/TimerContext/TimerContext";
+import { useEffect, useState } from "react";
 
 const Timer = () => {
-  const { time, start, stop, reset, foward, state, running } =
-    useTimerContext();
+  const [time, setTime] = useState(
+    parseInt(window.localStorage.getItem("timer")) || 0
+  );
+  const [running, setRunning] = useState(false);
+
+  const start = () => setRunning(true);
+  const stop = () => setRunning(false);
+
+  useEffect(() => {
+    let interval: string | number | NodeJS.Timeout | undefined;
+
+    if (running) {
+      interval = setInterval(() => {
+        setTime((prevTime: number) => {
+          window.localStorage.setItem("timer", prevTime + 10);
+          return prevTime + 10;
+        });
+      }, 10);
+    } else if (!running) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [running]);
 
   return (
     <div className="">
@@ -44,30 +65,7 @@ const Timer = () => {
             </svg>
           </button>
         )}
-        <button className="btn" onClick={reset}>
-          <svg
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="1 4 1 10 7 10"></polyline>
-            <polyline points="23 20 23 14 17 14"></polyline>
-            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
-          </svg>
-        </button>
-        <button className="btn" onClick={foward}>
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-            <polygon points="13 19 22 12 13 5 13 19"></polygon>
-            <polygon points="2 19 11 12 2 5 2 19"></polygon>
-          </svg>
-        </button>
       </div>
-      <div>{running ? "running" : "no running"}</div>
     </div>
   );
 };

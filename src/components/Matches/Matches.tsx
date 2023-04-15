@@ -1,7 +1,6 @@
-import { useMatchesContext } from "../../context/MatchesContext/MatchesContext";
+import { Link } from "react-router-dom";
 
-const Matches = () => {
-  const { matches } = useMatchesContext();
+const Matches = ({ items }) => {
   return (
     <div className="overflow-x-auto w-full my-3">
       <table className="table w-full">
@@ -16,15 +15,15 @@ const Matches = () => {
           </tr>
         </thead>
         <tbody>
-          {matches.map((match, i) => (
-            <tr key={i}>
+          {items.map((match) => (
+            <tr key={match.id}>
               <th>
                 <label>
                   <input type="checkbox" className="checkbox" />
                 </label>
               </th>
               <td>
-                <span>{match.name}</span>
+                <Link to={"/board/" + match.id}>{match.name}</Link>
               </td>
             </tr>
           ))}

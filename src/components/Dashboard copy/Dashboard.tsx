@@ -1,6 +1,8 @@
 import { Key } from "react";
+import { useTimerContext } from "../../context/TimerContext/TimerContext";
 
-const Dashboard = ({ options, addEvent }: { options: { text: string }[] }) => {
+const Dashboard = ({ options }: { options: { text: string }[] }) => {
+  const { addEvent, time } = useTimerContext();
 
   return (
     <div className="grid grid-cols-4 gap-2">
@@ -8,9 +10,9 @@ const Dashboard = ({ options, addEvent }: { options: { text: string }[] }) => {
         <div
           className="btn btn-lg"
           key={i}
-          onClick={() => addEvent(option.text)}
+          onClick={() => time > 0 && addEvent(option.text)}
         >
-          {option.text}
+          {option.text} {i}
         </div>
       ))}
     </div>

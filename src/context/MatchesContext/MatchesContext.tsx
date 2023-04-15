@@ -1,28 +1,27 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { addDoc, collection } from "firebase/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { FirebaseStore as db } from "../../firebase";
 
 export const MatchesContext = createContext({
   matches: [],
 });
 
 const MatchesContextProvider = ({ children }: { children: ReactNode }) => {
-  const [matches, setMatches] = useState<{}[]>([]);
+  const [matches, loading, error] = useCollection(collection(db, "spends"), {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  });
 
-  const addMatch = (name: any) => {
-    setMatches([...matches, { name }]);
+  const addMatch = async (name: string) => {
   };
-  const removeMatches = (id: string) => {
-    setMatches((e) => e.filter((match: any) => match.id !== id));
-  };
-  const updateMatch = (id: string, match: any) => {
-    setMatches((e) => {
-      const index = e.findIndex((match: any) => match.id === id);
-      e[index] = { ...e[index], match };
-      return e;
-    });
-  };
+
+  const removeMatches = (id: string) => {};
+  const updateMatch = (id: string, match: any) => {};
 
   const value: any = {
     matches,
+    loading,
+    error,
     addMatch,
     removeMatches,
     updateMatch,

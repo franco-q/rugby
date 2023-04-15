@@ -6,6 +6,7 @@ import Index from "@/pages/Index";
 import Events from "@/pages/Events";
 import Player from "@/pages/Player";
 import Match from "@/pages/Match";
+import Board from "@/pages/Board";
 import Navbar from "@/components/Navbar/Navbar";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/events" element={<Events />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/match/:id" element={<Match />} />
+                <Route path="/board/:id" element={<Board />} />
               </Routes>
             </div>
           </div>
