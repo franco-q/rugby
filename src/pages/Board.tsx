@@ -13,16 +13,18 @@ const Board = () => {
     snapshotListenOptions: { includeMetadataChanges: true },
   });
 
-  const [events] = useCollection(collection(db, "matches/" + id + "/events"), {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  });
+  const [events, loadingEvents] = useCollection(
+    collection(db, "matches/" + id + "/events"),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
+  );
 
-  const addEvent = async (name) => {
+  const addEvent = async ({ name, team }: { name: string; team: string }) => {
     const time = window.localStorage.getItem("timer");
-    console.log(time);
-
     await addDoc(collection(db, "matches/" + id + "/events"), {
       name,
+      team,
       time,
     });
   };
@@ -30,43 +32,70 @@ const Board = () => {
   const removeEvent = () => {};
 
   const options = [
-    { text: "penal a favor" },
-    { text: "penal en contra" },
-    { text: "line a favor" },
-    { text: "line en contra" },
-    { text: "scrum a favor" },
-    { text: "scrum en contra" },
+    { text: "penal" },
+    { text: "line" },
+    { text: "scrum" },
     { text: "salida de 22" },
-    { text: "recepcion salida de 22" },
-    { text: "try a favor" },
-    { text: "try en contra" },
-    { text: "penal a los palos a favor" },
-    { text: "penal a los palos en contra" },
-    { text: "drop a favor" },
-    { text: "drop en contra" },
-    { text: "try penal a favor" },
-    { text: "try penal en contra" },
+    { text: "breakdown" },
+    { text: "tackle errado" },
+    { text: "amarilla" },
+    { text: "roja" },
+    { text: "pick&go" },
+    { text: "ruck" },
   ];
 
-  return (
-    <div>
-      {error && <strong>Error: {JSON.stringify(error)}</strong>}
-      {loading && <span>Document: Loading...</span>}
-      {value && <span>Document: {JSON.stringify(value.data())}</span>}
+  const onScore = async ({
+    team,
+    name,
+    value,
+  }: {
+    team: string;
+    name: string;
+    value: Number;
+  }) => {
+    const time = window.localStorage.getItem("timer");
+    await addDoc(collection(db, "matches/" + id + "/events"), {
+      name,
+      team,
+      value,
+      time,
+    });
+  };
 
+  return loadingEvents ? (
+    <></>
+  ) : (
+    <div>
       <div className="p-4 min-h-screen">
         <div className="gap-4 -mx-4 grid grid-flow-col h-full">
           <div className="">
             <BoardTimer />
           </div>
           {events && (
-              <Timeline
-              events={events.docs.map((doc) => ({ ...doc.data(), id: doc.id }))}
+            <Timeline
+              events={events.docs
+                .map((doc) => ({ ...doc.data(), id: doc.id }))
+                .sort((a, b) => b.time - a.time)}
               removeEvent={removeEvent}
-              />
-              )}
-              <Score />
+            />
+          )}
           <div className="row-span-2">
+            <Score
+              onScore={onScore}
+              log={events.docs
+                .map((doc) => ({ ...doc.data(), id: doc.id }))
+                .sort((a, b) => b.time - a.time)}
+              home={events.docs
+                .map((doc) => ({ ...doc.data(), id: doc.id }))
+                .filter((e) => e.team === "HOME" && e.hasOwnProperty("value"))
+                .sort((a, b) => b.time - a.time)
+                .map((e) => e.value)}
+              away={events.docs
+                .map((doc) => ({ ...doc.data(), id: doc.id }))
+                .filter((e) => e.team === "AWAY" && e.hasOwnProperty("value"))
+                .sort((a, b) => b.time - a.time)
+                .map((e) => e.value)}
+            />
             <Dashboard options={options} addEvent={addEvent} />
           </div>
         </div>

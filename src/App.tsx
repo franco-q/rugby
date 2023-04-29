@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import TimerContextProvider from "./context/TimerContext/TimerContext";
 import MatchesContextProvider from "./context/MatchesContext/MatchesContext";
 import EventsContextProvider from "./context/EventsContext/EventsContext";
-import Index from "@/pages/Index";
+import Index from "@/pages/Index.tsx";
 import Events from "@/pages/Events";
 import Player from "@/pages/Player";
 import Match from "@/pages/Match";

@@ -32,9 +32,9 @@ const Timer = () => {
         <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
         <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
       </div>
-      <div className="btn-group justify-center">
+      <div>
         {running ? (
-          <button className="btn" onClick={stop}>
+          <button className="btn btn-wide w-full" onClick={stop}>
             <svg
               viewBox="0 0 24 24"
               width="24"
@@ -50,7 +50,7 @@ const Timer = () => {
             </svg>
           </button>
         ) : (
-          <button className="btn" onClick={start}>
+          <button className="btn btn-wide w-full" onClick={start}>
             <svg
               viewBox="0 0 24 24"
               width="24"

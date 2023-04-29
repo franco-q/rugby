@@ -1,15 +1,15 @@
 const Timeline = ({ events, removeEvent }) => {
   return (
     <div className="max-h-max overflow-y-auto">
-      <div className="p-4">
+      <div className="pl-4">
         <ol className="relative border-l border-gray-200 dark:border-gray-700">
           {events.map(
             (
               { name, id, time }: { name: string; id: string; time: number },
               i: number
             ) => (
-              <li className="mb-10 ml-6" key={i}>
-                <span className="flex absolute -left-3 justify-center items-center w-6 h-6 bg-blue-400 rounded-full">
+              <li className="mb-10 ml-6 relative" key={i}>
+                <span className="flex absolute -left-9 justify-center items-center w-6 h-6 bg-blue-400 rounded-full top-1">
                   <span className="text-white text-1xl">
                     {events.length - i}
                   </span>
