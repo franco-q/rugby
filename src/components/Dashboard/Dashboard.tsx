@@ -1,14 +1,19 @@
 import { Key } from "react";
 
-const Dashboard = ({ options, addEvent }: { options: { text: string }[] }) => {
+type Params = {
+  options: { text: string }[];
+  addEvent: (arg: { name: string; team: "HOME" | "AWAY" }) => void;
+};
+
+const Dashboard = ({ options, addEvent }: Params) => {
   return (
     <div className="grid grid-cols-2 gap-2">
       <div className="grid grid-cols-2 gap-2">
         {options.map((option: { text: string }, i: Key) => (
           <div
-            className="btn btn-lg btn-info"
+            className="btn btn-lg bg-blue-500"
             key={i}
-            onClick={() => addEvent({name: option.text, team: 'HOME'})}
+            onClick={() => addEvent({ name: option.text, team: "HOME" })}
           >
             {option.text}
           </div>
@@ -17,9 +22,9 @@ const Dashboard = ({ options, addEvent }: { options: { text: string }[] }) => {
       <div className="grid grid-cols-2 gap-2">
         {options.map((option: { text: string }, i: Key) => (
           <div
-            className="btn btn-lg btn-primary"
+            className="btn btn-lg bg-red-500"
             key={i}
-            onClick={() => addEvent({name: option.text, team: 'AWAY'})}
+            onClick={() => addEvent({ name: option.text, team: "AWAY" })}
           >
             {option.text}
           </div>

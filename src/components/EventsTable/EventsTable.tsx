@@ -1,7 +1,8 @@
-import { useEventsContext } from "@/context/EventsContext/EventsContext";
+type Props = {
+  events: { name: string }[];
+};
 
-const Events = () => {
-  const { events } = useEventsContext();
+const Events = ({ events }: Props) => {
   return (
     <div className="overflow-x-auto w-full my-3">
       <table className="table w-full">

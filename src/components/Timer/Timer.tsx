@@ -1,9 +1,13 @@
-import { useTimerContext } from "../../context/TimerContext/TimerContext";
+type Props = {
+  time: any;
+  start: any;
+  stop: any;
+  reset: any;
+  foward: any;
+  running: any;
+};
 
-const Timer = () => {
-  const { time, start, stop, reset, foward, state, running } =
-    useTimerContext();
-
+const Timer = ({ time, start, stop, reset, foward, running }: Props) => {
   return (
     <div className="">
       <div className="text-center font-mono text-6xl">

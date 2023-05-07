@@ -1,6 +1,11 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import { Key } from "react";
 
-const Matches = ({ items }) => {
+type Props = {
+  items: { id: Key; name: string; date: string }[];
+};
+
+const Matches = ({ items }: Props) => {
   return (
     <div className="overflow-x-auto w-full my-3">
       <table className="table w-full">
@@ -11,7 +16,8 @@ const Matches = ({ items }) => {
                 <input type="checkbox" className="checkbox" />
               </label>
             </th>
-            <th>Name</th>
+            <th>Nombre</th>
+            <th>Fecha</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +29,10 @@ const Matches = ({ items }) => {
                 </label>
               </th>
               <td>
-                <Link to={"/board/" + match.id}>{match.name}</Link>
+                <Link href={"/board/" + match.id}>{match.name}</Link>
+              </td>
+              <td>
+                <Link href={"/board/" + match.id}>{match.date}</Link>
               </td>
             </tr>
           ))}
