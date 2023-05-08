@@ -11,7 +11,7 @@ const Points = ({ team, onScore, points }: Props) => {
     <div className="dropdown">
       <label
         tabIndex={0}
-        className="btn btn-ghost btn-lg text-center font-mono text-6xl w-52"
+        className="btn btn-ghost btn-lg text-center font-mono text-9xl w-52 h-auto"
       >
         {points.reduce(
           (a, b) => parseInt(a.toString()) + parseInt(b.toString()),

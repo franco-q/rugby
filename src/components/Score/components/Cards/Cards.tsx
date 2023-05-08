@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TimerContext } from "@/components/Board/context/TimerContext/TimerContext";
+import { TimerContext } from "../../context/TimerContext/TimerContext";
 import formatTime from "@/utils/formatTime";
 
 type Props = {
@@ -16,11 +16,12 @@ const Cards = ({ add, yellows, reds, team }: Props) => {
     activ.length > 0
       ? formatTime(activ[activ.length - 1].expires - time)
       : false;
+
   return (
     <>
       <div className="flex gap-2 justify-center">
         <button
-          className="btn bg-red-500"
+          className="btn border-none bg-red-500"
           onClick={() => add({ team, name: "roja" })}
         >
           {reds.length || " "}
@@ -32,7 +33,7 @@ const Cards = ({ add, yellows, reds, team }: Props) => {
             </span>
           )}
           <button
-            className="btn bg-yellow-500"
+            className="btn border-none bg-yellow-500"
             onClick={() =>
               add({ team, time, expires: time + 600000, name: "amarilla" })
             }

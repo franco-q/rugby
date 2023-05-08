@@ -1,1 +1,1 @@
-export { default } from "@/components/pages/Score/Score";
+export { default } from "@/components/pages/ScorePage/ScorePage";

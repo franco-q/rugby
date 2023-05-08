@@ -1,28 +1,48 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 
+type addEventArgs = {
+  team: string;
+  name: string;
+  value?: Number | undefined;
+};
+
 interface TimerContextProps {
   time: number;
   running: boolean;
+  events: any[];
   reset: () => void;
   stop: () => void;
   play: () => void;
   toggle: () => void;
+  addEvent: (args: addEventArgs) => void;
 }
 
 export const TimerContext = createContext<TimerContextProps>({
   time: 0,
+  running: false,
+  events: [],
   reset: () => {},
   stop: () => {},
   play: () => {},
   toggle: () => {},
-  running: false,
+  addEvent: () => {},
 });
 
 export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
-  const [time, setTime] = useState<number>(() =>
-    parseInt(localStorage.getItem("timer") || "0", 10)
-  );
+  const [time, setTime] = useState<number>(0);
   const [running, setRunning] = useState(false);
+  const [events, setEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    const _timer =
+      typeof window === "object" ? window.localStorage.getItem("timer") : "0";
+    setTime(parseInt(_timer || "0", 10));
+
+    const ls = window.localStorage.getItem("events");
+    if (ls) {
+      setEvents(JSON.parse(ls));
+    }
+  }, []);
 
   useEffect(() => {
     let interval: string | number | NodeJS.Timeout | undefined;
@@ -30,7 +50,7 @@ export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
     if (running) {
       interval = setInterval(() => {
         setTime((v) => {
-          let t = v + 10;
+          let t = (v || 0) + 10;
           window.localStorage.setItem("timer", t.toString());
           return t;
         });
@@ -43,7 +63,9 @@ export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
 
   const reset = () => {
     localStorage.setItem("timer", "0");
+    localStorage.setItem("events", "[]");
     setTime(0);
+    setEvents([]);
     setRunning(false);
   };
 
@@ -54,15 +76,36 @@ export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
   const play = () => {
     setRunning(true);
   };
-  const toggle = () => setRunning((v) => !v);
+
+  const toggle = () => {
+    setRunning((v) => !v);
+  };
+
+  const addEvent = async (payload: addEventArgs) => {
+    const time = parseInt(window.localStorage.getItem("timer") || "0");
+    setEvents((v) => {
+      const _events = [
+        ...v,
+        {
+          ...payload,
+          time,
+        },
+      ];
+
+      window.localStorage.setItem("events", JSON.stringify(_events));
+      return _events;
+    });
+  };
 
   const value = {
     time,
     running,
+    events,
     reset,
     stop,
     play,
     toggle,
+    addEvent,
   };
 
   return (

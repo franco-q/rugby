@@ -11,22 +11,22 @@ interface TimerContextProps {
 
 export const TimerContext = createContext<TimerContextProps>({
   time: 0,
+  running: false,
   reset: () => {},
   stop: () => {},
   play: () => {},
   toggle: () => {},
-  running: false,
 });
 
 export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
-  const [time, setTime] = useState<number>();
+  const [time, setTime] = useState<number>(0);
   const [running, setRunning] = useState(false);
 
   useEffect(() => {
     const _timer =
       typeof window === "object" ? window.localStorage.getItem("timer") : "0";
     setTime(parseInt(_timer || "0", 10));
-  });
+  }, []);
 
   useEffect(() => {
     let interval: string | number | NodeJS.Timeout | undefined;
@@ -34,7 +34,7 @@ export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
     if (running) {
       interval = setInterval(() => {
         setTime((v) => {
-          let t = v + 10;
+          let t = (v || 0) + 10;
           window.localStorage.setItem("timer", t.toString());
           return t;
         });
@@ -44,6 +44,7 @@ export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
     }
     return () => clearInterval(interval);
   }, [running]);
+  
 
   const reset = () => {
     localStorage.setItem("timer", "0");
@@ -58,7 +59,10 @@ export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
   const play = () => {
     setRunning(true);
   };
-  const toggle = () => setRunning((v) => !v);
+
+  const toggle = () => {
+    setRunning((v) => !v);
+  };
 
   const value = {
     time,
