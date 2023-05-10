@@ -14,5 +14,10 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    {
+      pattern: /(bg|text)-([a-z]+)-(\d[50]0?)/,
+    },
+  ],
   plugins: [require("daisyui")],
 };

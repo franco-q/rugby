@@ -1,4 +1,5 @@
 import { Key } from "react";
+import formatTime from "@/utils/formatTime";
 
 type Props = {
   events: {
@@ -44,17 +45,16 @@ const Timeline = ({ events, removeEvent }: Props) => {
               key={i as Key}
             >
               <span
-                className={`flex absolute -left-8 justify-center items-center w-6 h-6 rounded-full top-4 bg-${color}-500`}
+                className={`flex absolute -left-8 justify-center items-center w-6 h-6 rounded-full top-4 bg-${color}-100`}
               >
-                <small className="text-white">
+                <small className={`text-${color}-500 font-semibold`}>
                   {events.length - (i as number)}
                 </small>
               </span>
               <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
                 {name}
                 <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500 font-mono">
-                  {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
-                  {("0" + Math.floor((time / 1000) % 60)).slice(-2)}
+                  {formatTime(time)}
                 </time>
               </h3>
               {removeEvent && (

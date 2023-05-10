@@ -6,13 +6,14 @@ type Props = {
   points: string[];
 };
 
-const Keypad = ({ team, onScore, points }: Props) => {
+const Points = ({ team, onScore, points }: Props) => {
   return (
     <div className="dropdown">
       <label
         tabIndex={0}
-        className="btn btn-ghost btn-lg text-center font-mono text-6xl w-52"
+        className="indicator btn btn-ghost btn-lg text-center font-mono text-9xl w-full h-auto"
       >
+        {/* <span className="indicator-bottom indicator-item indicator-center badge badge-secondary"></span> */}
         {points.reduce(
           (a, b) => parseInt(a.toString()) + parseInt(b.toString()),
           0
@@ -78,4 +79,4 @@ const Keypad = ({ team, onScore, points }: Props) => {
   );
 };
 
-export default Keypad;
+export default Points;

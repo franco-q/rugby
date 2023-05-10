@@ -14,7 +14,7 @@ const Cards = ({ add, yellows, reds, team }: Props) => {
   const activ = yellows.filter((i: any) => i.expires > time);
   const formatedTime =
     activ.length > 0
-      ? formatTime(activ[activ.length - 1].expires - time)
+      ? formatTime(activ[0].expires - time)
       : false;
 
   return (

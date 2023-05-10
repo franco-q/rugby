@@ -1,8 +1,8 @@
-import Points from "@/components/Points/Points";
 import {
   TimerContextProvider,
   TimerContext,
 } from "./context/TimerContext/TimerContext";
+import Points from "./components/Points/Points";
 import Cards from "./components/Cards/Cards";
 import Timer from "./components/Timer/Timer";
 import Timeline from "./components/Timeline/Timeline";
@@ -15,11 +15,11 @@ const Score = () => {
   return (
     <TimerContextProvider>
       <TimerContext.Consumer>
-        {({ events, addEvent }) => (
-          <div className="w-[32rem] mx-auto gap-4 grid">
-            <div className="flex">
+        {({ events, addEvent, removeEvent }) => (
+          <div className="w-[32rem] max-w-full mx-auto gap-4 grid">
+            <div className="flex gap-4">
               <div className="w-1/2">
-                <div className="grid gap-3 text-center">
+                <div className="grid gap-4 text-center bg-red-100 rounded-xl p-4">
                   <Points
                     points={events
                       .filter(
@@ -39,10 +39,11 @@ const Score = () => {
                       (e) => e.team === HOME && e.name == "roja"
                     )}
                   />
+                  {/* <hr className="w-1/2 mx-auto border-red-500 border-2 rounded" /> */}
                 </div>
               </div>
               <div className="w-1/2">
-                <div className="grid gap-3 text-center">
+                <div className="grid gap-4 text-center bg-blue-100 rounded-xl p-4">
                   <Points
                     team={AWAY}
                     points={events
@@ -62,6 +63,7 @@ const Score = () => {
                       (e) => e.team === AWAY && e.name == "roja"
                     )}
                   />
+                  {/* <hr className="w-1/2 mx-auto border-blue-500 border-2 rounded" /> */}
                 </div>
               </div>
             </div>
@@ -77,7 +79,7 @@ const Score = () => {
                     ...e,
                     color: e.team == HOME ? "blue" : "red",
                   }))}
-                removeEvent={(e) => {}}
+                removeEvent={removeEvent}
               />
             </div>
           </div>

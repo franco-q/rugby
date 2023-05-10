@@ -1,5 +1,4 @@
 import { Key } from "react";
-import { DefaultColors } from "tailwindcss/types/generated/colors";
 
 type Props = {
   options: { text: string }[];

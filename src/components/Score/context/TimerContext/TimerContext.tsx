@@ -15,6 +15,7 @@ interface TimerContextProps {
   play: () => void;
   toggle: () => void;
   addEvent: (args: addEventArgs) => void;
+  removeEvent: (id: string) => void;
 }
 
 export const TimerContext = createContext<TimerContextProps>({
@@ -26,6 +27,7 @@ export const TimerContext = createContext<TimerContextProps>({
   play: () => {},
   toggle: () => {},
   addEvent: () => {},
+  removeEvent: () => {},
 });
 
 export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
@@ -83,18 +85,23 @@ export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
 
   const addEvent = async (payload: addEventArgs) => {
     const time = parseInt(window.localStorage.getItem("timer") || "0");
-    setEvents((v) => {
+    setEvents((ev) => {
       const _events = [
-        ...v,
+        ...ev,
         {
           ...payload,
           time,
+          id: ev.length + time,
         },
       ];
 
       window.localStorage.setItem("events", JSON.stringify(_events));
       return _events;
     });
+  };
+
+  const removeEvent = (id: string) => {
+    setEvents((_events) => _events.filter((e) => e.id != id));
   };
 
   const value = {
@@ -106,6 +113,7 @@ export const TimerContextProvider = ({ children }: { children: ReactNode }) => {
     play,
     toggle,
     addEvent,
+    removeEvent,
   };
 
   return (
