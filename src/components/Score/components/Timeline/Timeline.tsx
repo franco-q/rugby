@@ -37,7 +37,7 @@ type Props = {
 const Timeline = ({ events, removeEvent }: Props) => {
   return (
     <div className="max-h-full overflow-y-auto">
-      <div className="pl-4">
+      <div className="pl-3">
         <ol className="relative border-l border-gray-200 dark:border-gray-700">
           {events.map(({ name, id, time, color }, i: Key | number) => (
             <li
@@ -51,9 +51,9 @@ const Timeline = ({ events, removeEvent }: Props) => {
                   {events.length - (i as number)}
                 </small>
               </span>
-              <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="mb-1 text-lg font-semibold text-gray-900">
                 {name}
-                <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500 font-mono">
+                <time className="block mb-2 text-sm font-normal leading-none text-gray-400 font-mono">
                   {formatTime(time)}
                 </time>
               </h3>

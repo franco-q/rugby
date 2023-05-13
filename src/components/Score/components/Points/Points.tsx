@@ -1,3 +1,5 @@
+import { memo, useId } from "react";
+
 type Team = "HOME" | "AWAY";
 
 type Props = {
@@ -7,76 +9,93 @@ type Props = {
 };
 
 const Points = ({ team, onScore, points }: Props) => {
+  const id = useId();
   return (
-    <div className="dropdown">
+    <>
       <label
-        tabIndex={0}
-        className="indicator btn btn-ghost btn-lg text-center font-mono text-9xl w-full h-auto"
+        htmlFor={"points_modal_" + team}
+        className="btn btn-ghost btn-lg text-center font-mono text-9xl w-full h-auto dark:text-black"
       >
-        {/* <span className="indicator-bottom indicator-item indicator-center badge badge-secondary"></span> */}
         {points.reduce(
           (a, b) => parseInt(a.toString()) + parseInt(b.toString()),
           0
         )}
       </label>
-      <ul
-        tabIndex={0}
-        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full"
-      >
-        <li>
-          <button
-            className="btn btn-ghost btn-md"
-            onClick={() => {
-              onScore({ team, value: 5, name: "try" });
-            }}
+      <input
+        type="checkbox"
+        id={"points_modal_" + team}
+        className="modal-toggle"
+      />
+      <div className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box relative sm:max-w-[20rem!important]">
+          <label
+            htmlFor={"points_modal_" + team}
+            className="btn btn-sm btn-circle absolute right-2 top-2"
           >
-            try
-          </button>
-        </li>
-        <li>
-          <button
-            disabled={parseInt(points[0]) !== 5}
-            className="btn btn-ghost btn-md"
-            onClick={() => {
-              onScore({ team, value: 2, name: "conv." });
-            }}
-          >
-            conversion
-          </button>
-        </li>
-        <li>
-          <button
-            className="btn btn-ghost btn-md"
-            onClick={() => {
-              onScore({ team, value: 7, name: "try penal" });
-            }}
-          >
-            try penal
-          </button>
-        </li>
-        <li>
-          <button
-            className="btn btn-ghost btn-md"
-            onClick={() => {
-              onScore({ team, value: 3, name: "drop" });
-            }}
-          >
-            drop
-          </button>
-        </li>
-        <li>
-          <button
-            className="btn btn-ghost btn-md"
-            onClick={() => {
-              onScore({ team, value: 3, name: "penal" });
-            }}
-          >
-            penal
-          </button>
-        </li>
-      </ul>
-    </div>
+            ✕
+          </label>
+          <h1 className="font-mono text-2xl">{team}</h1>
+          <div>
+            <label
+              htmlFor={"points_modal_" + team}
+              className="btn btn-ghost btn-md btn-wide"
+              onClick={() => {
+                onScore({ team, value: 5, name: "try" });
+              }}
+            >
+              try
+            </label>
+          </div>
+          {parseInt(points[0]) == 5 && (
+            <div>
+              <label
+                htmlFor={"points_modal_" + team}
+                className="btn btn-ghost btn-md btn-wide"
+                onClick={() => {
+                  onScore({ team, value: 2, name: "conv." });
+                }}
+              >
+                conversion
+              </label>
+            </div>
+          )}
+          <div>
+            <label
+              htmlFor={"points_modal_" + team}
+              className="btn btn-ghost btn-md btn-wide"
+              onClick={() => {
+                onScore({ team, value: 7, name: "try penal" });
+              }}
+            >
+              try penal
+            </label>
+          </div>
+          <div>
+            <label
+              htmlFor={"points_modal_" + team}
+              className="btn btn-ghost btn-md btn-wide"
+              onClick={() => {
+                onScore({ team, value: 3, name: "drop" });
+              }}
+            >
+              drop
+            </label>
+          </div>
+          <div>
+            <label
+              htmlFor={"points_modal_" + team}
+              className="btn btn-ghost btn-md btn-wide"
+              onClick={() => {
+                onScore({ team, value: 3, name: "penal" });
+              }}
+            >
+              penal
+            </label>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
-export default Points;
+export default memo(Points);

@@ -13,15 +13,13 @@ const Cards = ({ add, yellows, reds, team }: Props) => {
   const { time } = useContext(TimerContext);
   const activ = yellows.filter((i: any) => i.expires > time);
   const formatedTime =
-    activ.length > 0
-      ? formatTime(activ[0].expires - time)
-      : false;
+    activ.length > 0 ? formatTime(activ[0].expires - time) : false;
 
   return (
     <>
       <div className="flex gap-2 justify-center">
         <button
-          className="btn border-none bg-red-500"
+          className="btn border-none bg-red-500 dark:text-black hover:text-white"
           onClick={() => add({ team, name: "roja" })}
         >
           {reds.length || " "}
@@ -33,7 +31,7 @@ const Cards = ({ add, yellows, reds, team }: Props) => {
             </span>
           )}
           <button
-            className="btn border-none bg-yellow-500"
+            className="btn border-none bg-yellow-500 dark:text-black hover:text-white"
             onClick={() =>
               add({ team, time, expires: time + 600000, name: "amarilla" })
             }
