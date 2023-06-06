@@ -17,7 +17,7 @@ const Score = () => {
       <TimerContext.Consumer>
         {({ events, addEvent, removeEvent }) => (
           <div className="w-[32rem] max-w-full mx-auto gap-4 grid">
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <div className="w-1/2">
                 <div className="grid gap-4 text-center bg-red-100 rounded-xl p-4">
                   <Points
@@ -39,7 +39,6 @@ const Score = () => {
                       (e) => e.team === HOME && e.name == "roja"
                     )}
                   />
-                  {/* <hr className="w-1/2 mx-auto border-red-500 border-2 rounded" /> */}
                 </div>
               </div>
               <div className="w-1/2">
@@ -63,16 +62,15 @@ const Score = () => {
                       (e) => e.team === AWAY && e.name == "roja"
                     )}
                   />
-                  {/* <hr className="w-1/2 mx-auto border-blue-500 border-2 rounded" /> */}
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="flex justify-center gap-1">
               <Timer />
               <ResetBtn />
             </div>
             <div className="">
-              <Timeline
+              {/* <Timeline
                 events={events
                   .sort((a, b) => parseInt(b.time) - parseInt(a.time))
                   .map((e) => ({
@@ -80,7 +78,7 @@ const Score = () => {
                     color: e.team == HOME ? "blue" : "red",
                   }))}
                 removeEvent={removeEvent}
-              />
+              /> */}
             </div>
           </div>
         )}

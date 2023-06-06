@@ -10,6 +10,11 @@ export default function App({ Component, pageProps }: AppProps) {
         if (screenLock !== null && document.visibilityState === "visible") {
           screenLock = await window.navigator.wakeLock.request("screen");
         }
+
+        window.localStorage.setItem(
+          document.visibilityState,
+          new Date().getTime().toString()
+        );
       });
 
       return () => {
@@ -24,6 +29,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className="p-4 h-screen max-h-screen">
       <Component {...pageProps} />
+      <audio
+        src="https://adventure.land/sounds/loops/empty_loop_for_js_performance.ogg"
+        loop
+      ></audio>
     </div>
   );
 }
