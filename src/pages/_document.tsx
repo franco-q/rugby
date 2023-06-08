@@ -7,6 +7,13 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.addEventListener("visibilitychange", function(){
+              window.localStorage.setItem(document.visibilityState, Date.now().toString());
+            });`,
+          }}
+        />
       </body>
     </Html>
   );
