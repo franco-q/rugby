@@ -1,18 +1,17 @@
-import { useContext } from "react";
-import { TimerContext } from "../../context/TimerContext/TimerContext";
-
 type Props = {
   className?: string;
+  time: number;
+  running: boolean;
+  onClick: () => void;
 };
 
-const Timer = ({ className }: Props) => {
-  const { time, running, toggle } = useContext(TimerContext);
+const Timer = ({ className, time, running, onClick }: Props) => {
   return (
     <button
-      className={`btn btn-ghost btn-lg gap-3 font-mono text-6xl flex-nowrap ${
+      className={`${
         className || ""
-      }`}
-      onClick={toggle}
+      } btn btn-ghost btn-lg gap-3 font-mono text-6xl flex-nowrap`}
+      onClick={onClick}
     >
       <svg
         viewBox="0 0 24 24"
@@ -34,6 +33,8 @@ const Timer = ({ className }: Props) => {
         )}
       </svg>
       <>
+        {time > 3600000 &&
+          ("0" + Math.floor((time / 3600000) % 60)).slice(-2) + ":"}
         {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
         {("0" + Math.floor((time / 1000) % 60)).slice(-2)}
       </>

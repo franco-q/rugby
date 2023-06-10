@@ -7,13 +7,12 @@ type Props = {
   yellows: any;
   reds: any;
   team: any;
+  time: number;
 };
 
-const Cards = ({ add, yellows, reds, team }: Props) => {
-  const { time } = useContext(TimerContext);
-  const activ = yellows.filter((i: any) => i.expires > time);
+const Cards = ({ add, yellows, reds, team, time }: Props) => {
   const formatedTime =
-    activ.length > 0 ? formatTime(activ[0].expires - time) : false;
+    yellows.length > 0 ? formatTime(yellows[0].expires - time) : false;
 
   return (
     <>
@@ -25,7 +24,7 @@ const Cards = ({ add, yellows, reds, team }: Props) => {
           {reds.length || " "}
         </button>
         <div className="indicator">
-          {activ.length > 0 && formatedTime && (
+          {yellows.length > 0 && formatedTime && (
             <span className="indicator-item badge badge-info">
               {formatedTime}
             </span>
@@ -36,7 +35,7 @@ const Cards = ({ add, yellows, reds, team }: Props) => {
               add({ team, time, expires: time + 600000, name: "amarilla" })
             }
           >
-            {activ.length || " "}
+            {yellows.length || " "}
           </button>
         </div>
       </div>

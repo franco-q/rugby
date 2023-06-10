@@ -1,12 +1,14 @@
-import { useContext } from "react";
-import { TimerContext } from "../../context/TimerContext/TimerContext";
+import { memo } from "react";
 
-const ResetBtn = () => {
-  const { reset } = useContext(TimerContext);
+type Props = {
+  onClick: () => void;
+};
+
+const ResetBtn = ({ onClick }: Props) => {
   return (
     <button
       className="btn btn-ghost btn-lg gap-3 font-mono text-6xl"
-      onClick={reset}
+      onClick={onClick}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -29,4 +31,4 @@ const ResetBtn = () => {
   );
 };
 
-export default ResetBtn;
+export default memo(ResetBtn);
