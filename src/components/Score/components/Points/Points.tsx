@@ -99,7 +99,7 @@ const Points = ({ team, onScore, points }: Props) => {
                 htmlFor={"points_modal_" + team}
                 className="btn border-0 bg-green-500"
                 onClick={() => {
-                  onScore({ team, value: 3, name: "line bueno" });
+                  onScore({ team, name: "line bueno" });
                 }}
               >
                 BUENO
@@ -108,7 +108,7 @@ const Points = ({ team, onScore, points }: Props) => {
                 htmlFor={"points_modal_" + team}
                 className="btn border-0 bg-red-500"
                 onClick={() => {
-                  onScore({ team, value: 3, name: "line perdido" });
+                  onScore({ team, name: "line perdido" });
                 }}
               >
                 PERDIDO
@@ -117,7 +117,7 @@ const Points = ({ team, onScore, points }: Props) => {
                 htmlFor={"points_modal_" + team}
                 className="btn border-0 bg-sky-500"
                 onClick={() => {
-                  onScore({ team, value: 3, name: "line robado" });
+                  onScore({ team, name: "line robado" });
                 }}
               >
                 ROBADO
