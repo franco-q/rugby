@@ -2,18 +2,14 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Points from "./components/Points/Points";
 import Cards from "./components/Cards/Cards";
 import Timer from "./components/Timer/Timer";
-import Timeline from "./components/Timeline/Timeline";
 import ResetBtn from "./components/ResetBtn/ResetBtn";
+import Navigation from "./components/Navigation/Navigation";
+import { RED, YELLOW, AWAY, HOME } from "@/constants";
 
 const lsInt = (k: string) =>
   parseInt(window.localStorage.getItem(k) || "0", 10);
 
 const Score = () => {
-  const HOME = "HOME";
-  const AWAY = "AWAY";
-  const YELLOW = "amarilla";
-  const RED = "roja";
-
   const [time, setTime] = useState<number>(0);
   const [running, setRunning] = useState(false);
   const [events, setEvents] = useState<any>([]);
@@ -146,17 +142,7 @@ const Score = () => {
         />
         <ResetBtn onClick={reset} />
       </div>
-      <div className="">
-        <Timeline
-          events={events
-            .sort((a: any, b: any) => parseInt(b.id) - parseInt(a.id))
-            .map((e: any) => ({
-              ...e,
-              color: e.team == AWAY ? "blue" : "red",
-            }))}
-          removeEvent={removeEvent}
-        />
-      </div>
+      <Navigation events={events} removeEvent={removeEvent} />
     </div>
   );
 };

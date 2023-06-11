@@ -1,4 +1,20 @@
 import { memo, useId } from "react";
+import {
+  CONVERSION,
+  DROP,
+  FREE_KICK,
+  LINE_BUENO,
+  LINE_PERDIDO,
+  LINE_ROBADO,
+  PALOS_CONVERTIDO,
+  PALOS_ERRADO,
+  PENAL,
+  SCRUM_BUENO,
+  SCRUM_PERDIDO,
+  SCRUM_ROBADO,
+  TRY,
+  TRY_PENAL,
+} from "@/constants";
 
 type Team = "HOME" | "AWAY";
 
@@ -40,7 +56,7 @@ const Points = ({ team, onScore, points }: Props) => {
               htmlFor={"points_modal_" + team}
               className="btn btn-ghost btn-md btn-wide"
               onClick={() => {
-                onScore({ team, value: 5, name: "try" });
+                onScore({ team, value: 5, name: TRY });
               }}
             >
               try
@@ -52,7 +68,7 @@ const Points = ({ team, onScore, points }: Props) => {
                 htmlFor={"points_modal_" + team}
                 className="btn btn-ghost btn-md btn-wide"
                 onClick={() => {
-                  onScore({ team, value: 2, name: "conv." });
+                  onScore({ team, value: 2, name: CONVERSION });
                 }}
               >
                 conversion
@@ -64,7 +80,7 @@ const Points = ({ team, onScore, points }: Props) => {
               htmlFor={"points_modal_" + team}
               className="btn btn-ghost btn-md btn-wide"
               onClick={() => {
-                onScore({ team, value: 7, name: "try penal" });
+                onScore({ team, value: 7, name: TRY_PENAL });
               }}
             >
               try penal
@@ -75,49 +91,61 @@ const Points = ({ team, onScore, points }: Props) => {
               htmlFor={"points_modal_" + team}
               className="btn btn-ghost btn-md btn-wide"
               onClick={() => {
-                onScore({ team, value: 3, name: "drop" });
+                onScore({ team, value: 3, name: DROP });
               }}
             >
               drop
             </label>
           </div>
           <div>
-            <label
-              htmlFor={"points_modal_" + team}
-              className="btn btn-ghost btn-md btn-wide"
-              onClick={() => {
-                onScore({ team, value: 3, name: "penal" });
-              }}
-            >
-              penal
-            </label>
+            <div className="divider">PENALES A LOS PALOS</div>
+            <div className="btn-group w-full">
+              <label
+                htmlFor={"points_modal_" + team}
+                className="w-1/2 btn border-0 bg-green-400"
+                onClick={() => {
+                  onScore({ team, value: 3, name: PALOS_CONVERTIDO });
+                }}
+              >
+                CONVERTIDO
+              </label>
+              <label
+                htmlFor={"points_modal_" + team}
+                className="w-1/2 btn border-0 bg-red-400"
+                onClick={() => {
+                  onScore({ team, name: PALOS_ERRADO });
+                }}
+              >
+                ERRADO
+              </label>
+            </div>
           </div>
           <div>
             <div className="divider">LINE</div>
-            <div className="btn-group">
+            <div className="btn-group w-full">
               <label
                 htmlFor={"points_modal_" + team}
-                className="btn border-0 bg-green-500"
+                className="w-1/3 btn border-0 bg-green-400"
                 onClick={() => {
-                  onScore({ team, name: "line bueno" });
+                  onScore({ team, name: LINE_BUENO });
                 }}
               >
                 BUENO
               </label>
               <label
                 htmlFor={"points_modal_" + team}
-                className="btn border-0 bg-red-500"
+                className="w-1/3 btn border-0 bg-red-400"
                 onClick={() => {
-                  onScore({ team, name: "line perdido" });
+                  onScore({ team, name: LINE_PERDIDO });
                 }}
               >
                 PERDIDO
               </label>
               <label
                 htmlFor={"points_modal_" + team}
-                className="btn border-0 bg-sky-500"
+                className="w-1/3 btn border-0 bg-sky-400"
                 onClick={() => {
-                  onScore({ team, name: "line robado" });
+                  onScore({ team, name: LINE_ROBADO });
                 }}
               >
                 ROBADO
@@ -126,33 +154,56 @@ const Points = ({ team, onScore, points }: Props) => {
           </div>
           <div>
             <div className="divider">SCRUM</div>
-            <div className="btn-group">
+            <div className="btn-group w-full">
               <label
                 htmlFor={"points_modal_" + team}
-                className="btn border-0 bg-green-500"
+                className="btn w-1/3 border-0 bg-green-400"
                 onClick={() => {
-                  onScore({ team, name: "scrum bueno" });
+                  onScore({ team, name: SCRUM_BUENO });
                 }}
               >
                 BUENO
               </label>
               <label
                 htmlFor={"points_modal_" + team}
-                className="btn border-0 bg-red-500"
+                className="btn w-1/3 border-0 bg-red-400"
                 onClick={() => {
-                  onScore({ team, name: "scrum perdido" });
+                  onScore({ team, name: SCRUM_PERDIDO });
                 }}
               >
                 PERDIDO
               </label>
               <label
                 htmlFor={"points_modal_" + team}
-                className="btn border-0 bg-sky-500"
+                className="btn w-1/3 border-0 bg-sky-400"
                 onClick={() => {
-                  onScore({ team, name: "scrum robado" });
+                  onScore({ team, name: SCRUM_ROBADO });
                 }}
               >
                 ROBADO
+              </label>
+            </div>
+          </div>
+          <div>
+            <div className="divider">INFRACCIONES A FAVOR</div>
+            <div className="btn-group w-full">
+              <label
+                htmlFor={"points_modal_" + team}
+                className="btn w-1/2 border-0 bg-gray-400"
+                onClick={() => {
+                  onScore({ team, name: PENAL });
+                }}
+              >
+                penal
+              </label>
+              <label
+                htmlFor={"points_modal_" + team}
+                className="btn w-1/2 border-0 bg-gray-400"
+                onClick={() => {
+                  onScore({ team, name: FREE_KICK });
+                }}
+              >
+                free kick
               </label>
             </div>
           </div>
