@@ -119,15 +119,15 @@ function Stats({ events }: any) {
           className="flex gap-4 w-full text-center justify-center items-center mb-3"
           key={t}
         >
-          <button className="btn btn-ghost font-mono text-5xl">
+          <span className="font-mono text-5xl">
             {events.filter((e: any) => e.team === HOME && e.name === t).length}
-          </button>
+          </span>
           <div className="w-1/2 divider my-auto font-sans text-xl font-bold">
             {t}
           </div>
-          <button className="btn btn-ghost font-mono text-5xl">
+          <span className="font-mono text-5xl">
             {events.filter((e: any) => e.team === AWAY && e.name === t).length}
-          </button>
+          </span>
         </div>
       ))}
     </div>

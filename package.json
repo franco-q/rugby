@@ -27,6 +27,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@types/dom-screen-wake-lock": "^1.0.1"
+    "@types/dom-screen-wake-lock": "^1.0.1",
+    "easytimer-react-hook": "^2.0.2"
   }
 }

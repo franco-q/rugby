@@ -1,18 +1,22 @@
-import { useContext } from "react";
-import { TimerContext } from "../../context/TimerContext/TimerContext";
+import { memo, useEffect, useRef, useState } from "react";
 import formatTime from "@/utils/formatTime";
 
 type Props = {
   add: (args: any) => void;
-  yellows: any;
+  yellows: any[];
   reds: any;
   team: any;
-  time: number;
+  timer: any;
 };
 
-const Cards = ({ add, yellows, reds, team, time }: Props) => {
-  const formatedTime =
-    yellows.length > 0 ? formatTime(yellows[0].expires - time) : false;
+const Cards = ({ add, yellows, reds, team, timer }: Props) => {
+  const active = yellows.filter(
+    (y) => y.expires > timer.getTotalTimeValues().seconds
+  );
+  const time =
+    active[0] && active[0]
+      ? active[0].expires - timer.getTotalTimeValues().seconds
+      : false;
 
   return (
     <>
@@ -24,18 +28,25 @@ const Cards = ({ add, yellows, reds, team, time }: Props) => {
           {reds.length || " "}
         </button>
         <div className="indicator">
-          {yellows.length > 0 && formatedTime && (
+          {time && (
             <span className="indicator-item badge badge-info">
-              {formatedTime}
+              {[time / 60, time % 60]
+                .map((v) => ("0" + Math.floor(v)).slice(-2))
+                .join(":")}
             </span>
           )}
           <button
             className="btn border-none bg-yellow-500 dark:text-black hover:text-white"
             onClick={() =>
-              add({ team, time, expires: time + 600000, name: "amarilla" })
+              add({
+                team,
+                time: timer.getTotalTimeValues().seconds,
+                expires: timer.getTotalTimeValues().seconds + 600,
+                name: "amarilla",
+              })
             }
           >
-            {yellows.length || " "}
+            {active.length || " "}
           </button>
         </div>
       </div>
@@ -43,4 +54,12 @@ const Cards = ({ add, yellows, reds, team, time }: Props) => {
   );
 };
 
-export default Cards;
+// export default Cards;
+
+export default memo(Cards, (a, b) => {
+  return b.yellows.every(
+    (y) => y.expires < b.timer.getTotalTimeValues().seconds
+  )
+    ? a.yellows.length === b.yellows.length
+    : false;
+});

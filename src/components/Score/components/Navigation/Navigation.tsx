@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import Stats from "@/components/Score/components/Stats/Stats";
 import Timeline from "@/components/Score/components/Timeline/Timeline";
 import { AWAY } from "@/constants";
@@ -73,4 +73,4 @@ const Navigation = ({ events, removeEvent }: any) => {
   );
 };
 
-export default Navigation;
+export default memo(Navigation);

@@ -1,17 +1,14 @@
 type Props = {
-  className?: string;
-  time: number;
-  running: boolean;
-  onClick: () => void;
+  timer: any;
 };
 
-const Timer = ({ className, time, running, onClick }: Props) => {
+const Timer = ({ timer }: Props) => {
+  const t = timer.getTotalTimeValues().seconds;
+
   return (
     <button
-      className={`${
-        className || ""
-      } btn btn-ghost btn-lg gap-3 font-mono text-6xl flex-nowrap`}
-      onClick={onClick}
+      className="btn btn-ghost btn-lg gap-3 font-mono text-6xl flex-nowrap"
+      onClick={() => (!timer.isRunning() ? timer.start() : timer.pause())}
     >
       <svg
         viewBox="0 0 24 24"
@@ -23,7 +20,7 @@ const Timer = ({ className, time, running, onClick }: Props) => {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {running ? (
+        {timer.isRunning() ? (
           <>
             <rect x="6" y="4" width="4" height="16"></rect>
             <rect x="14" y="4" width="4" height="16"></rect>
@@ -32,12 +29,7 @@ const Timer = ({ className, time, running, onClick }: Props) => {
           <polygon points="5 3 19 12 5 21 5 3"></polygon>
         )}
       </svg>
-      <>
-        {time > 3600000 &&
-          ("0" + Math.floor((time / 3600000) % 60)).slice(-2) + ":"}
-        {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
-        {("0" + Math.floor((time / 1000) % 60)).slice(-2)}
-      </>
+      {[t / 60, t % 60].map((v) => ("0" + Math.floor(v)).slice(-2)).join(":")}
     </button>
   );
 };

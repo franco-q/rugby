@@ -1,74 +1,49 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Points from "./components/Points/Points";
 import Cards from "./components/Cards/Cards";
 import Timer from "./components/Timer/Timer";
 import ResetBtn from "./components/ResetBtn/ResetBtn";
 import Navigation from "./components/Navigation/Navigation";
 import { RED, YELLOW, AWAY, HOME } from "@/constants";
+import useTimer from "easytimer-react-hook";
 
-const lsInt = (k: string) =>
-  parseInt(window.localStorage.getItem(k) || "0", 10);
+const Score = ({ seconds, events: _events }: any) => {
+  const [timer] = useTimer({
+    startValues: {
+      seconds,
+    },
+    precision: "seconds",
+  });
 
-const Score = () => {
-  const [time, setTime] = useState<number>(0);
-  const [running, setRunning] = useState(false);
-  const [events, setEvents] = useState<any>([]);
-  const interval = useRef<NodeJS.Timer>();
-
-  useEffect(() => {
-    if (running) {
-      interval.current = setInterval(() => {
-        let visible = lsInt("visible");
-        let hidden = lsInt("hidden");
-        let timer = lsInt("timer");
-
-        if (timer > 10800000) {
-          setRunning(false);
-          return;
-        }
-
-        if (visible > hidden) {
-          timer += visible - hidden;
-          window.localStorage.removeItem("visible");
-          window.localStorage.removeItem("hidden");
-        } else {
-          timer += 10;
-        }
-
-        window.localStorage.setItem("timer", timer.toString());
-        setTime(timer);
-      }, 10);
-    } else if (!running) {
-      window.localStorage.removeItem("visible");
-      window.localStorage.removeItem("hidden");
-      clearInterval(interval.current);
-    }
-  }, [running]);
+  const [events, setEvents] = useState<any>(_events);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setTime(parseInt(window.localStorage.getItem("timer") || "0", 10));
-      setEvents(JSON.parse(window.localStorage.getItem("events") || "[]"));
-    }
+    timer.on("secondsUpdated", (t) => {
+      window.localStorage.setItem(
+        "time",
+        t.detail.timer.getTotalTimeValues().seconds.toString()
+      );
+    });
+  }, [timer]);
 
-    return () => clearInterval(interval.current);
-  }, []);
+  useEffect(() => {
+    window.localStorage.setItem("events", JSON.stringify(events));
+  }, [events]);
 
   const reset = useCallback(() => {
     window.localStorage.clear();
-    setTime(0);
-    setRunning(false);
+    setEvents([]);
+    timer.stop();
   }, []);
 
-  const addEvent = async (payload: any) => {
-    const time = parseInt(window.localStorage.getItem("timer") || "0");
+  const addEvent = useCallback((payload: any) => {
     setEvents((ev: any) => {
       const _events = [
         ...ev,
         {
           ...payload,
-          time,
-          id: ev.length + time,
+          time: timer.getTotalTimeValues().seconds,
+          id: ev.length + Date.now(),
         },
       ];
 
@@ -76,70 +51,76 @@ const Score = () => {
 
       return _events;
     });
-  };
+  }, []);
 
-  const removeEvent = (id: string) => {
+  const removeEvent = useCallback((id: string) => {
     setEvents((_events: []) =>
       _events.filter((e: { id: string }) => e.id != id)
     );
-  };
+  }, []);
+
+  const points = useMemo(
+    () => ({
+      [HOME]: events
+        .filter((e: any) => e.team === HOME && e.hasOwnProperty("value"))
+        .map((e: any) => e.value),
+      [AWAY]: events
+        .filter((e: any) => e.team === AWAY && e.hasOwnProperty("value"))
+        .map((e: any) => e.value),
+    }),
+    [events]
+  );
+
+  const yellows = useMemo(
+    () => ({
+      [HOME]: events
+        .filter((e: any) => e.team === HOME && e.name == YELLOW)
+        .sort((a: any, b: any) => a.time - b.time),
+      [AWAY]: events
+        .filter((e: any) => e.team === AWAY && e.name == YELLOW)
+        .sort((a: any, b: any) => a.time - b.time),
+    }),
+    [events]
+  );
+
+  const reds = useMemo(
+    () => ({
+      [HOME]: events.filter((e: any) => e.team === HOME && e.name == RED),
+      [AWAY]: events.filter((e: any) => e.team === AWAY && e.name == RED),
+    }),
+    [events]
+  );
 
   return (
     <div className="max-w-full w-[32rem] mx-auto gap-4 grid">
       <div className="flex gap-4 max-w-full">
         <div className="w-1/2">
           <div className="grid gap-4 text-center bg-red-100 rounded-xl p-3">
-            <Points
-              points={events
-                .filter(
-                  (e: any) => e.team === HOME && e.hasOwnProperty("value")
-                )
-                .map((e: any) => e.value)}
-              team={HOME}
-              onScore={addEvent}
-            />
+            <Points points={points[HOME]} team={HOME} onScore={addEvent} />
             <Cards
-              time={time}
+              timer={timer}
               team={HOME}
               add={addEvent}
-              yellows={events.filter(
-                (e: any) =>
-                  e.team === HOME && e.name == YELLOW && e.expires > time
-              )}
-              reds={events.filter((e: any) => e.team === HOME && e.name == RED)}
+              yellows={yellows[HOME]}
+              reds={reds[HOME]}
             />
           </div>
         </div>
         <div className="w-1/2">
           <div className="grid gap-4 text-center bg-blue-100 rounded-xl p-3">
-            <Points
-              team={AWAY}
-              points={events
-                .filter(
-                  (e: any) => e.team === AWAY && e.hasOwnProperty("value")
-                )
-                .map((e: any) => e.value)}
-              onScore={addEvent}
-            />
+            <Points team={AWAY} points={points[AWAY]} onScore={addEvent} />
             <Cards
-              time={time}
+              timer={timer}
               team={AWAY}
               add={addEvent}
-              yellows={events.filter(
-                (e: any) =>
-                  e.team === AWAY && e.name == YELLOW && e.expires > time
-              )}
-              reds={events.filter((e: any) => e.team === AWAY && e.name == RED)}
+              yellows={yellows[AWAY]}
+              reds={reds[AWAY]}
             />
           </div>
         </div>
       </div>
       <div className="flex justify-center gap-1">
-        <Timer
-          time={time}
-          running={running}
-          onClick={() => setRunning((v) => !v)}
-        />
+        <Timer timer={timer} />
         <ResetBtn onClick={reset} />
       </div>
       <Navigation events={events} removeEvent={removeEvent} />

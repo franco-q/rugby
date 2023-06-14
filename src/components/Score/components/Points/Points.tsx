@@ -1,4 +1,4 @@
-import { memo, useId } from "react";
+import { memo } from "react";
 import {
   CONVERSION,
   DROP,
@@ -25,7 +25,6 @@ type Props = {
 };
 
 const Points = ({ team, onScore, points }: Props) => {
-  const id = useId();
   return (
     <>
       <label
@@ -43,7 +42,7 @@ const Points = ({ team, onScore, points }: Props) => {
         className="modal-toggle"
       />
       <div className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box relative sm:max-w-[20rem!important]">
+        <div className="modal-box relative sm:max-w-[20rem!important] pt-2">
           <label
             htmlFor={"points_modal_" + team}
             className="btn btn-sm btn-circle absolute right-2 top-2"
@@ -185,7 +184,7 @@ const Points = ({ team, onScore, points }: Props) => {
             </div>
           </div>
           <div>
-            <div className="divider">INFRACCIONES A FAVOR</div>
+            <div className="divider">INFRACCIONES</div>
             <div className="btn-group w-full">
               <label
                 htmlFor={"points_modal_" + team}
@@ -194,7 +193,7 @@ const Points = ({ team, onScore, points }: Props) => {
                   onScore({ team, name: PENAL });
                 }}
               >
-                penal
+                {PENAL}
               </label>
               <label
                 htmlFor={"points_modal_" + team}
@@ -203,7 +202,7 @@ const Points = ({ team, onScore, points }: Props) => {
                   onScore({ team, name: FREE_KICK });
                 }}
               >
-                free kick
+                {FREE_KICK}
               </label>
             </div>
           </div>
@@ -213,4 +212,15 @@ const Points = ({ team, onScore, points }: Props) => {
   );
 };
 
-export default memo(Points);
+export default memo(Points, (prev, next) => {
+  return (
+    prev.points.reduce(
+      (a, b) => parseInt(a.toString()) + parseInt(b.toString()),
+      0
+    ) ===
+    next.points.reduce(
+      (a, b) => parseInt(a.toString()) + parseInt(b.toString()),
+      0
+    )
+  );
+});
