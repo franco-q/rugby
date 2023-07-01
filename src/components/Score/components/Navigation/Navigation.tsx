@@ -3,7 +3,7 @@ import Stats from "@/components/Score/components/Stats/Stats";
 import Timeline from "@/components/Score/components/Timeline/Timeline";
 import { AWAY } from "@/constants";
 
-const Navigation = ({ events, removeEvent }: any) => {
+const Navigation = ({ events, removeEvent, addEvent }: any) => {
   const [view, setView] = useState<string>("timeline");
 
   const views: any = {
@@ -68,6 +68,7 @@ const Navigation = ({ events, removeEvent }: any) => {
             color: e.team == AWAY ? "blue" : "red",
           }))}
         removeEvent={removeEvent}
+        addEvent={addEvent}
       />
     </>
   );

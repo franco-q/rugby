@@ -123,7 +123,11 @@ const Score = ({ seconds, events: _events }: any) => {
         <Timer timer={timer} />
         <ResetBtn onClick={reset} />
       </div>
-      <Navigation events={events} removeEvent={removeEvent} />
+      <Navigation
+        events={events}
+        removeEvent={removeEvent}
+        addEvent={addEvent}
+      />
     </div>
   );
 };

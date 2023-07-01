@@ -29,7 +29,7 @@ const Timer = ({ timer }: Props) => {
           <polygon points="5 3 19 12 5 21 5 3"></polygon>
         )}
       </svg>
-      {[t / 60, t % 60].map((v) => ("0" + Math.floor(v)).slice(-2)).join(":")}
+      {[t / 120, t % 60].map((v) => ("0" + Math.floor(v)).slice(-2)).join(":")}
     </button>
   );
 };

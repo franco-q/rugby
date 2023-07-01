@@ -20,10 +20,8 @@ import {
 } from "@/constants";
 import React from "react";
 
-function Stats({ events }: any) {
+function Stats({ events, addEvent }: any) {
   const types = [
-    TRY_PENAL,
-    DROP,
     PENAL,
     FREE_KICK,
     LINE_BUENO,
@@ -32,8 +30,6 @@ function Stats({ events }: any) {
     SCRUM_BUENO,
     SCRUM_PERDIDO,
     SCRUM_ROBADO,
-    YELLOW,
-    RED,
   ];
 
   return (
@@ -47,7 +43,7 @@ function Stats({ events }: any) {
                   a += 1;
                 }
                 if (e.team === HOME && e.name === CONVERSION) {
-                  a += 1;
+                  b += 1;
                 }
                 return [a, b];
               },
@@ -56,7 +52,7 @@ function Stats({ events }: any) {
             .join("/")}
         </div>
         <div className="w-1/2 divider my-auto font-sans text-xl font-bold">
-          trys
+          trys/conversiones
         </div>
         <div className="font-mono text-5xl">
           {events
@@ -66,7 +62,7 @@ function Stats({ events }: any) {
                   a += 1;
                 }
                 if (e.team === AWAY && e.name === CONVERSION) {
-                  a += 1;
+                  b += 1;
                 }
                 return [a, b];
               },
@@ -114,20 +110,42 @@ function Stats({ events }: any) {
             .join("/")}
         </div>
       </div>
+      {[TRY_PENAL, DROP, YELLOW, RED].map((t) => (
+        <div
+          className="flex gap-4 w-full text-center justify-center items-center mb-3"
+          key={t}
+        >
+          <div className="font-mono text-5xl">
+            {events.filter((e: any) => e.team === HOME && e.name === t).length}
+          </div>
+          <div className="w-1/2 divider my-auto font-sans text-xl font-bold">
+            {t}
+          </div>
+          <div className="font-mono text-5xl">
+            {events.filter((e: any) => e.team === AWAY && e.name === t).length}
+          </div>
+        </div>
+      ))}
       {types.map((t) => (
         <div
           className="flex gap-4 w-full text-center justify-center items-center mb-3"
           key={t}
         >
-          <span className="font-mono text-5xl">
+          <button
+            className="btn w-1/4 btn-ghost font-mono text-5xl"
+            onClick={() => addEvent({ team: HOME, name: t })}
+          >
             {events.filter((e: any) => e.team === HOME && e.name === t).length}
-          </span>
+          </button>
           <div className="w-1/2 divider my-auto font-sans text-xl font-bold">
             {t}
           </div>
-          <span className="font-mono text-5xl">
+          <button
+            className="btn w-1/4 btn-ghost font-mono text-5xl"
+            onClick={() => addEvent({ team: AWAY, name: t })}
+          >
             {events.filter((e: any) => e.team === AWAY && e.name === t).length}
-          </span>
+          </button>
         </div>
       ))}
     </div>
